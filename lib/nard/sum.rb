@@ -36,7 +36,15 @@ class Nard::Sum
     end
   end
 
-  %i|* / ** < > <= >= <=>|.each do |operator|
+  %i|* /|.each do |operator|
+    define_method operator do |other|
+      self.class.new self.range do |x|
+        self.block[x].send operator, other.to_i
+      end
+    end
+  end
+
+  %i|** == < > <= >= <=>|.each do |operator|
     define_method operator do |other|
       self.to_i.send operator, other.to_i
     end
